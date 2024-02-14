@@ -10,10 +10,16 @@ namespace CLEAN_OP
 {
     public partial class Form1 : Form
     {
-
+        private Timer timer;
         public Form1()
         {
             InitializeComponent();
+
+            // Initialize timer
+            timer = new Timer();
+            timer.Interval = 1000; // Update every second
+            timer.Tick += Timer_Tick_Tick;
+            timer.Start();
 
         }
 
@@ -86,71 +92,64 @@ namespace CLEAN_OP
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void Timer_Tick_Tick(object sender, EventArgs e)
         {
             // Get RAM usage information
             PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
             long availableRam = (long)ramCounter.NextValue();
-            long totalRam = (long)ramCounter.NextValue();
+            long totalRam = (int)ramCounter.NextValue();
             long usedRam = totalRam - availableRam;
 
             // Get disk usage information
-            PerformanceCounter diskCounter = new PerformanceCounter("LogicalDisk", "Free Megabytes", "%SystemDrive");
+            PerformanceCounter diskCounter = new PerformanceCounter("LogicalDisk", "Free Megabytes", "C:");
             long availableDisk = (long)diskCounter.NextValue();
-            long totalDisk = (long)diskCounter.NextValue();
+            long totalDisk = (int)diskCounter.NextValue();
             long usedDisk = totalDisk - availableDisk;
 
-            // Create chart data
-            var chartData1 = new Chart();
-            chartData1.Dock = DockStyle.Fill;
-            chartData1.BackColor = Color.White;
+            // Get CPU usage information
+            PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            float cpuUsage = cpuCounter.NextValue();
 
-            var series1 = new Series("RAM Usage");
-            series1.ChartType = SeriesChartType.Bar;
+            // Get GPU usage information
+            // This code uses WMI to get GPU usage information.
+            // You may need to install the WMI Code Creator to use this code.
 
-            var chartData2 = new Chart();
-            chartData2.Dock = DockStyle.Fill;
-            chartData2.BackColor = Color.White;
-
-            var series2 = new Series("Disk Usage");
-            series2.ChartType = SeriesChartType.Bar;
-
-            // Check if there is any data to display
-            if (series1.Points.Count > 0 && series2.Points.Count > 0)
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PerfFormattedData_GPU");
+            foreach (ManagementObject obj in searcher.Get())
             {
-                // Set axis label rotation
-                chartData1.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
-                chartData2.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
-
-                // Set chart size
-                chartData1.Width = panel1.Width;
-                chartData1.Height = panel1.Height;
-                chartData2.Width = panel2.Width;
-                chartData2.Height = panel2.Height;
-
-                // Add data points
-                series1.Points.AddXY("Used", usedRam);
-                series1.Points.AddXY("Available", availableRam);
-                series2.Points.AddXY("Used", usedDisk);
-                series2.Points.AddXY("Available", availableDisk);
-
-                // Add chart to panel1
-                panel1.Controls.Clear();
-                panel1.Controls.Add(chartData1);
-
-                // Add chart to panel2
-                panel2.Controls.Clear();
-                panel2.Controls.Add(chartData2);
+                float gpuUsage = (float)obj["PercentShaderTime"];
+                label6.Text = $"GPU: {gpuUsage}%";
             }
-            else
+
+            // Get temperature information
+            // This code uses the OpenHardwareMonitor library to get temperature information.
+            // You need to install the OpenHardwareMonitor library to use this code.
+
+            using (var hardware = new Hardware())
             {
-                // Display error message
-                MessageBox.Show("No hay datos disponibles.");
-                return;
+                hardware.Update();
+
+                foreach (var sensor in hardware.Sensors)
+                {
+                    if (sensor.SensorType == SensorType.Temperature)
+                    {
+                        label7.Text = $"Temperatura: {sensor.Value}°C";
+                    }
+                }
             }
+
+            // Update labels
+            label3.Text = $"Disco: {GetPercentage(usedDisk, totalDisk)}% ({usedDisk} MB / {totalDisk} MB)";
+            label4.Text = $"RAM: {GetPercentage(usedRam, totalRam)}% ({usedRam} MB / {totalRam} MB)";
+            label5.Text = $"CPU: {cpuUsage}%";
+        }
+        private string GetPercentage(long used, long total)
+        {
+            return Math.Round((double)used / (double)total * 100.0, 2).ToString();
         }
     }
-}
+
+    }
 
 
 
