@@ -10,3 +10,15 @@ C:\Users\Jhonattan\Documents\GitHub\Proyecto_Uno\CLEAN_OP\CLEAN_OP\obj\Debug\CLE
 C:\Users\Jhonattan\Documents\GitHub\Proyecto_Uno\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.pdb
 C:\Users\Jhonattan\Documents\GitHub\Proyecto_Uno\CLEAN_OP\CLEAN_OP\bin\Debug\System.Net.Http.Formatting.dll
 C:\Users\Jhonattan\Documents\GitHub\Proyecto_Uno\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.csproj.CopyComplete
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\bin\Debug\CLEAN_OP.exe.config
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\bin\Debug\CLEAN_OP.exe
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\bin\Debug\CLEAN_OP.pdb
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.csproj.AssemblyReference.cache
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.Form1.resources
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.Properties.Resources.resources
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.csproj.GenerateResource.cache
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.csproj.CoreCompileInputs.cache
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.csproj.CopyComplete
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.exe
+C:\Users\Jhonattan\Documents\GitHub\Proyecto_Final\CLEAN_OP\CLEAN_OP\obj\Debug\CLEAN_OP.pdb
