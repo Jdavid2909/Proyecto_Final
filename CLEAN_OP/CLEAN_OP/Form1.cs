@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Management;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
+using OpenHardwareMonitor.Hardware;
+using System.Linq;
 
 namespace CLEAN_OP
 {
@@ -14,13 +17,7 @@ namespace CLEAN_OP
         public Form1()
         {
             InitializeComponent();
-
-            // Initialize timer
-            timer = new Timer();
-            timer.Interval = 1000; // Update every second
-            timer.Tick += Timer_Tick_Tick;
-            timer.Start();
-
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -58,17 +55,17 @@ namespace CLEAN_OP
             sortedApplications.Sort((a, b) => a.ProcessName.CompareTo(b.ProcessName));
 
             // Mostrar la lista de aplicaciones
-            listBox1.Items.Clear();
+            APPS.Items.Clear();
             foreach (var application in sortedApplications)
             {
-                listBox1.Items.Add(application.ProcessName + " (" + application.WorkingSet64 / 1024 / 1024 + " MB)");
+                APPS.Items.Add(application.ProcessName + " (" + application.WorkingSet64 / 1024 / 1024 + " MB)");
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             // Obtener la aplicación seleccionada
-            var application = listBox1.SelectedItem?.ToString();
+            var application = APPS.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(application))
             {
                 MessageBox.Show("Por favor, selecciona una aplicación de la lista.");
@@ -92,60 +89,75 @@ namespace CLEAN_OP
             }
         }
 
-        private void Timer_Tick_Tick(object sender, EventArgs e)
-        {
-            // Get RAM usage information
-            PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-            long availableRam = (long)ramCounter.NextValue();
-            long totalRam = (int)ramCounter.NextValue();
-            long usedRam = totalRam - availableRam;
+     
 
-            // Get disk usage information
-            PerformanceCounter diskCounter = new PerformanceCounter("LogicalDisk", "Free Megabytes", "C:");
-            long availableDisk = (long)diskCounter.NextValue();
-            long totalDisk = (int)diskCounter.NextValue();
-            long usedDisk = totalDisk - availableDisk;
-
-            // Get CPU usage information
-            PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            float cpuUsage = cpuCounter.NextValue();
-
-            // Get GPU usage information
-            // This code uses WMI to get GPU usage information.
-            // You may need to install the WMI Code Creator to use this code.
-
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PerfFormattedData_GPU");
-            foreach (ManagementObject obj in searcher.Get())
-            {
-                float gpuUsage = (float)obj["PercentShaderTime"];
-                label6.Text = $"GPU: {gpuUsage}%";
-            }
-
-            // Get temperature information
-            // This code uses the OpenHardwareMonitor library to get temperature information.
-            // You need to install the OpenHardwareMonitor library to use this code.
-
-            using (var hardware = new Hardware())
-            {
-                hardware.Update();
-
-                foreach (var sensor in hardware.Sensors)
-                {
-                    if (sensor.SensorType == SensorType.Temperature)
-                    {
-                        label7.Text = $"Temperatura: {sensor.Value}°C";
-                    }
-                }
-            }
-
-            // Update labels
-            label3.Text = $"Disco: {GetPercentage(usedDisk, totalDisk)}% ({usedDisk} MB / {totalDisk} MB)";
-            label4.Text = $"RAM: {GetPercentage(usedRam, totalRam)}% ({usedRam} MB / {totalRam} MB)";
-            label5.Text = $"CPU: {cpuUsage}%";
-        }
         private string GetPercentage(long used, long total)
         {
             return Math.Round((double)used / (double)total * 100.0, 2).ToString();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+            // Obtener la información del disco
+            var disk = new DriveInfo("C");
+            var diskUsage = (double)disk.TotalSize - disk.AvailableFreeSpace;
+            var diskPercentage = Math.Round((double)diskUsage / disk.TotalSize * 100.0, 2);
+            label3.Text = $"Uso de disco: {diskPercentage}% ({diskUsage / 1024 / 1024} MB de {disk.TotalSize / 1024 / 1024} MB)";
+
+            // Obtener la información de la RAM
+            var memory = new PerformanceCounter("Memory", "Available MBytes");
+            var memoryUsage = (double)memory.NextValue();
+            var memoryPercentage = Math.Round((100.0 - memoryUsage) * 100.0 / memoryUsage, 2);
+            label4.Text = $"Uso de RAM: {memoryPercentage}% ({memoryUsage} MB de {memory.NextValue()} MB)";
+
+
+            // Obtener la información de la CPU
+            var cpu = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>().FirstOrDefault();
+            var cpuLoad = cpu?["LoadPercentage"];
+            label7.Text = $"Uso de la CPU: {cpuLoad} %";
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // Obtener la información del disco
+            var disk = new DriveInfo("C");
+            var diskUsage = (double)disk.TotalSize - disk.AvailableFreeSpace;
+            var diskPercentage = Math.Round((double)diskUsage / disk.TotalSize * 100.0, 2);
+            label3.Text = $"Uso de disco: {diskPercentage}% ({diskUsage / 1024 / 1024} MB de {disk.TotalSize / 1024 / 1024} MB)";
+
+            // Obtener la información de la RAM
+            var memory = new PerformanceCounter("Memory", "Available MBytes");
+            var memoryUsage = (double)memory.NextValue();
+            var memoryPercentage = Math.Round((100.0 - memoryUsage) * 100.0 / memoryUsage, 2);
+            label4.Text = $"Uso de RAM: {memoryPercentage}% ({memoryUsage} MB de {memory.NextValue()} MB)";
+
+
+            // Obtener la información de la CPU
+            var cpu = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>().FirstOrDefault();
+            var cpuLoad = cpu?["LoadPercentage"];
+            label7.Text = $"Uso de la CPU: {cpuLoad} %";
         }
     }
 
