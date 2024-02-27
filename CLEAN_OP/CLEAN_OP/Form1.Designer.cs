@@ -30,10 +30,10 @@ namespace CLEAN_OP
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.APPS = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -42,6 +42,7 @@ namespace CLEAN_OP
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,9 +64,9 @@ namespace CLEAN_OP
             this.checkBox1.Font = new System.Drawing.Font("My Font", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox1.Location = new System.Drawing.Point(16, 261);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(89, 21);
+            this.checkBox1.Size = new System.Drawing.Size(97, 21);
             this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Clean ram";
+            this.checkBox1.Text = "Clean temp";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -75,23 +76,11 @@ namespace CLEAN_OP
             this.checkBox2.Font = new System.Drawing.Font("My Font", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox2.Location = new System.Drawing.Point(16, 300);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(92, 21);
+            this.checkBox2.Size = new System.Drawing.Size(128, 21);
             this.checkBox2.TabIndex = 3;
-            this.checkBox2.Text = "Clean disc";
+            this.checkBox2.Text = "Clean cache nav";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Font = new System.Drawing.Font("My Font", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox3.Location = new System.Drawing.Point(16, 336);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(139, 21);
-            this.checkBox3.TabIndex = 4;
-            this.checkBox3.Text = "Execute in 2° map";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // button2
             // 
@@ -177,6 +166,10 @@ namespace CLEAN_OP
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -188,7 +181,6 @@ namespace CLEAN_OP
             this.Controls.Add(this.button3);
             this.Controls.Add(this.APPS);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button1);
@@ -214,7 +206,6 @@ namespace CLEAN_OP
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListBox APPS;
         private System.Windows.Forms.Button button3;
@@ -223,6 +214,7 @@ namespace CLEAN_OP
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
